@@ -2,19 +2,18 @@
 
 const execSync = require('child_process').execSync;
 const fs = require('fs');
-
 const plist = require('plist');
+
+const PLIST_FILEPATH = '~/Library/Safari/Bookmarks.plist';
 
 // get JSON representation of bookmars plist
 const getPlist = () => {
-  const filepath = '~/Library/Safari/Bookmarks.plist';
-
   return plist.parse(
-    execSync(`/usr/bin/plutil -convert xml1 -o - ${filepath}`, { encoding: 'utf8' })
+    execSync(`/usr/bin/plutil -convert xml1 -o - ${PLIST_FILEPATH}`, { encoding: 'utf8' })
   );
 };
 
-const getReadingList = plist => {
+const getReadingList = () => {
   const items = getPlist()
     .Children
       .find(item => item.Title === 'com.apple.ReadingList')
@@ -30,6 +29,4 @@ const getReadingList = plist => {
 
     return result;
   });
-}
-
-fs.writeFileSync('result.json', JSON.stringify(getReadingList(getPlist()), null, 2));
+};
