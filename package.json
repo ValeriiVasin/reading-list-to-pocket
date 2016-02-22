@@ -1,0 +1,19 @@
+{
+  "name": "reading-list-to-pocket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "author": "Valerii Vasin",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.5.1",
+    "rx": "^4.0.8",
+    "xml2js": "^0.4.16"
+  },
+  "devDependencies": {
+    "jasmine": "^2.4.1"
+  }
+}
