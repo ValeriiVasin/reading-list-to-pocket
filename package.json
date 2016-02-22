@@ -4,11 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "source ./env.sh && node app.js"
   },
   "author": "Valerii Vasin",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.15.0",
+    "co": "^4.6.0",
+    "cookie-parser": "^1.4.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "passport": "^0.3.2",
+    "passport-pocket": "^1.0.0",
     "plist": "^1.2.0"
   }
 }
