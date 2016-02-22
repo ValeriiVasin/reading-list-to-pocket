@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <head></head>
 <body>
-  <h1>Hello!</h1>
+  <form action="/api/sync" method="post">
+    <h1>Copy your bookmarks plist below:</h1>
+    <textarea name="plist" rows="8" cols="40"></textarea>
+    <pre>/usr/bin/plutil -convert xml1 -o - ~/Library/Safari/Bookmarks.plist | pbcopy</pre>
+    <input type="submit" value="Submit!" />
+  </form>
 </body>

@@ -2,9 +2,12 @@ const express = require('express');
 const passport = require('passport');
 const app = express();
 
+const bodyParser = require('body-parser');
+const getReadingList = require('./parser').getReadingList;
+
 app.use(require('serve-static')(__dirname + '/../../public'));
 app.use(require('cookie-parser')());
-app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '20mb' }));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -31,6 +34,13 @@ app.get('/login', (req, res) => {
   res.sendFile('login.html', { root: '.' });
 });
 
+app.post('/api/sync', (req, res) => {
+  console.log(getReadingList(req.body.plist)[0]);
+  res.redirect('/');
+});
+
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
+
+console.log('sfda');

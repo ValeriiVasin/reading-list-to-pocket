@@ -13,8 +13,8 @@ const getPlist = () => {
   );
 };
 
-const getReadingList = () => {
-  const items = getPlist()
+const getReadingList = (text) => {
+  const items = plist.parse(text)
     .Children
       .find(item => item.Title === 'com.apple.ReadingList')
         .Children;
@@ -29,4 +29,8 @@ const getReadingList = () => {
 
     return result;
   });
+};
+
+module.exports = {
+  getReadingList: getReadingList
 };
