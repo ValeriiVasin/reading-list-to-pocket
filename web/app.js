@@ -1,12 +1,12 @@
 const express = require('express');
 const passport = require('passport');
+const path = require('path');
 const app = express();
 
 const bodyParser = require('body-parser');
 
-const sync = require('./lib').sync;
+const sync = require('../lib').sync;
 
-app.use(require('serve-static')(__dirname + '/../../public'));
 app.use(require('cookie-parser')());
 app.use(bodyParser.urlencoded({ extended: true, limit: '20mb' }));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
@@ -28,11 +28,11 @@ const isAuthenticated = (req, res, next) => {
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', isAuthenticated, (req, res) => {
-  res.sendFile('index.html', { root: '.' });
+  res.sendFile('index.html', { root: __dirname });
 });
 
 app.get('/login', (req, res) => {
-  res.sendFile('login.html', { root: '.' });
+  res.sendFile('login.html', { root: __dirname });
 });
 
 app.post('/api/sync', (req, res) => {

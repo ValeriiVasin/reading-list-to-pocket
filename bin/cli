@@ -5,13 +5,14 @@ const request = require('superagent');
 const readline = require('readline');
 const co = require('co');
 const spawn = require('child_process').spawn;
+const argv = require('minimist')(process.argv.slice(2));
 
 const syncLocal = require('../lib').syncLocal;
 
-const CONSUMER_KEY = process.env.POCKET_CONSUMER_KEY;
-const handlePromiseError = (error) => console.error('ERROR!', error);
-
+const CONSUMER_KEY = argv.consumerKey || process.env.POCKET_CONSUMER_KEY;
 const REDIRECT_URI = 'https://getpocket.com';
+
+const handlePromiseError = (error) => console.error('ERROR!', error);
 
 const getRequestToken = (consumerKey, callback) => {
   return new Promise((resolve) => {
@@ -77,6 +78,10 @@ const waitForUserInput = () => {
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
+
+if (!CONSUMER_KEY) {
+  throw new Error('You should specify consumer key. Provide it via --consumerKey or as POCKET_CONSUMER_KEY environment variable.');
+}
 
 co(function *() {
   const accessToken = yield authorize(CONSUMER_KEY);
