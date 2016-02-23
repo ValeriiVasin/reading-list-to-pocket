@@ -37,8 +37,26 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/api/sync', (req, res) => {
-  console.log(getReadingList(req.body.plist)[0]);
-  res.redirect('/');
+  const items = getReadingList(req.body.plist);
+  const actions = items.map(item => ({
+    action: 'add',
+    time: Math.round(Date.parse(item.createdOn) / 1000),
+    url: item.url,
+    tags: 'safari-reading-list'
+  }));
+
+  pocket.modifyArticles(
+    actions,
+    process.env.POCKET_CONSUMER_KEY,
+    req.session.passport.user.accessToken,
+    (error, data) => {
+      if (error) {
+         console.error('ERROR!', error);
+      }
+
+      res.redirect('/');
+    }
+  );
 });
 
 app.listen(3000, function () {
