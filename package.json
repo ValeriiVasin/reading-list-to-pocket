@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "source ./env.sh && node app.js",
+    "start": "source ./env.sh && pm2 start app.js --watch",
+    "stop": "pm2 stop app.js --watch",
     "copy-plist": "/usr/bin/plutil -convert xml1 -o - ~/Library/Safari/Bookmarks.plist | ./bin/decrease-plist-size | pbcopy"
   },
   "author": "Valerii Vasin",
