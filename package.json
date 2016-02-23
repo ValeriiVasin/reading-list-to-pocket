@@ -27,6 +27,6 @@
     "superagent": "^1.7.2"
   },
   "bin": {
-    "sync-reading-list": "./bin/cli"
+    "reading-list-to-pocket": "./bin/cli"
   }
 }
