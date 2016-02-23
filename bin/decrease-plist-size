@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+'use strict';
+
+const plist = require('plist');
+const fs = require('fs');
+
+const decreasePlistSize = (content) => {
+  const plistJSON = plist.parse(content);
+
+  plistJSON
+    .Children
+    .find(item => item.Title === 'com.apple.ReadingList')
+      .Children.splice(10);
+
+  return plist.build(plistJSON);
+};
+
+// read piped input
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
+
+let content = '';
+process.stdin.on('data', (data) => {
+  content += data;
+});
+
+// output decreased plist
+process.stdin.on('end', () => console.log(decreasePlistSize(content)));

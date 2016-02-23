@@ -5,6 +5,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const getReadingList = require('./parser').getReadingList;
 
+const pocket = require('pocket-api');
+
 app.use(require('serve-static')(__dirname + '/../../public'));
 app.use(require('cookie-parser')());
 app.use(bodyParser.urlencoded({ extended: true, limit: '20mb' }));
@@ -42,5 +44,3 @@ app.post('/api/sync', (req, res) => {
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
-
-console.log('sfda');
