@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "source ./env.sh && pm2 start app.js --watch",
     "stop": "pm2 stop app.js --watch",
-    "copy-plist": "/usr/bin/plutil -convert xml1 -o - ~/Library/Safari/Bookmarks.plist | ./bin/decrease-plist-size | pbcopy"
+    "copy-plist": "/usr/bin/plutil -convert xml1 -o - ~/Library/Safari/Bookmarks.plist | ./bin/decrease-plist-size | pbcopy",
+    "cli": "source ./env.sh && ./bin/cli"
   },
   "author": "Valerii Vasin",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "passport": "^0.3.2",
     "passport-pocket": "^1.0.0",
     "plist": "^1.2.0",
-    "pocket-api": "^0.2.3"
+    "pocket-api": "^0.2.3",
+    "superagent": "^1.7.2"
   }
 }

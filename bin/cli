@@ -1,0 +1,84 @@
+#!/usr/bin/env node
+'use strict';
+
+const request = require('superagent');
+const readline = require('readline');
+const co = require('co');
+const spawn = require('child_process').spawn;
+
+const syncLocal = require('../lib').syncLocal;
+
+const CONSUMER_KEY = process.env.POCKET_CONSUMER_KEY;
+const handlePromiseError = (error) => console.error('ERROR!', error);
+
+const REDIRECT_URI = 'https://getpocket.com';
+
+const getRequestToken = (consumerKey, callback) => {
+  return new Promise((resolve) => {
+    request.post('https://getpocket.com/v3/oauth/request')
+      .send({
+        consumer_key: CONSUMER_KEY,
+        redirect_uri: REDIRECT_URI
+      })
+      .end((err, res) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        resolve(res.body.code);
+      });
+  }).catch(handlePromiseError);
+};
+
+const getAccessToken = (consumerKey, requestToken) => {
+  return new Promise((resolve, reject) => {
+    request.post('https://getpocket.com/v3/oauth/authorize')
+      .send({ consumer_key: consumerKey, code: requestToken })
+      .end((err, res) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        resolve(res.body.access_token);
+      });
+  }).catch(handlePromiseError);
+};
+
+const authorize = (consumerKey) => {
+  return co(function *() {
+    const requestToken = yield getRequestToken(consumerKey);
+    const AUTH_URL = `https://getpocket.com/auth/authorize?request_token=${requestToken}&redirect_uri=${REDIRECT_URI}`;
+    console.log('Now opening a browser to authenticate with Pocket...');
+
+    // wait a bit to let user read before opening
+    setTimeout(() => spawn('open', [AUTH_URL]), 1000);
+
+    yield waitForUserInput();
+    return yield getAccessToken(consumerKey, requestToken);
+  }).catch(handlePromiseError);
+};
+
+const waitForUserInput = () => {
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    rl.question('When finished press ENTER here...', () => {
+      rl.close();
+      resolve();
+    });
+  });
+};
+
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
+co(function *() {
+  const accessToken = yield authorize(CONSUMER_KEY);
+  yield syncLocal({ consumerKey: CONSUMER_KEY, accessToken: accessToken });
+}).catch(handlePromiseError);

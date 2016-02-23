@@ -3,9 +3,8 @@ const passport = require('passport');
 const app = express();
 
 const bodyParser = require('body-parser');
-const getReadingList = require('./parser').getReadingList;
 
-const pocket = require('pocket-api');
+const sync = require('./lib').sync;
 
 app.use(require('serve-static')(__dirname + '/../../public'));
 app.use(require('cookie-parser')());
@@ -37,26 +36,11 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/api/sync', (req, res) => {
-  const items = getReadingList(req.body.plist);
-  const actions = items.map(item => ({
-    action: 'add',
-    time: Math.round(Date.parse(item.createdOn) / 1000),
-    url: item.url,
-    tags: 'safari-reading-list'
-  }));
-
-  pocket.modifyArticles(
-    actions,
-    process.env.POCKET_CONSUMER_KEY,
-    req.session.passport.user.accessToken,
-    (error, data) => {
-      if (error) {
-         console.error('ERROR!', error);
-      }
-
-      res.redirect('/');
-    }
-  );
+  sync({
+    plistContent: req.body.plist,
+    consumerKey: process.env.POCKET_CONSUMER_KEY,
+    accessToken: req.session.passport.user.accessToken
+  }).then(() => res.redirect('/'));
 });
 
 app.listen(3000, function () {
