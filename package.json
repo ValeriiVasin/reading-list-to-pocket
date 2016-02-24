@@ -5,24 +5,14 @@
   "main": "lib.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "source ./env.sh && pm2 start ./web/app.js --watch",
-    "stop": "pm2 stop ./web/app.js --watch",
-    "copy-plist": "/usr/bin/plutil -convert xml1 -o - ~/Library/Safari/Bookmarks.plist | ./bin/decrease-plist-size | pbcopy",
     "cli": "source ./env.sh && ./bin/cli"
   },
   "author": "Valerii Vasin (valerii.vasin@groupon.com)",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.15.0",
     "co": "^4.6.0",
-    "cookie-parser": "^1.4.1",
-    "express": "^4.13.4",
-    "express-session": "^1.13.0",
     "minimist": "^1.2.0",
-    "passport": "^0.3.2",
-    "passport-pocket": "^1.0.0",
     "plist": "^1.2.0",
-    "pm2": "^1.0.1",
     "pocket-api": "^0.2.3",
     "server-destroy": "^1.0.1",
     "superagent": "^1.7.2"
