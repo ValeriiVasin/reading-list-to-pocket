@@ -2,7 +2,7 @@
   "name": "reading-list-to-pocket",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "source ./env.sh && pm2 start ./web/app.js --watch",
