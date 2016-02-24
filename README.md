@@ -10,5 +10,10 @@ npm install -g reading-list-to-pocket
 
 3. Sync your Safari Reading List with pocket
 ```bash
-sync-reading-list --consumer-key <YOUR_APP_CONSUMER_KEY>
+# providing consumer key as cli argument
+reading-list-to-pocket --consumerKey <YOUR_APP_CONSUMER_KEY>
+# providing key as environment variable
+POCKET_CONSUMER_KEY=<YOUR_APP_CONSUMER_KEY> reading-list-to-pocket
 ```
+
+***TIP:*** If you are going to sync your reading list with pocket more then once its better to set consumer key environment variable in `.bash_profile`.
