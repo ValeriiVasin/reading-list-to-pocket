@@ -24,6 +24,7 @@
     "plist": "^1.2.0",
     "pm2": "^1.0.1",
     "pocket-api": "^0.2.3",
+    "server-destroy": "^1.0.1",
     "superagent": "^1.7.2"
   },
   "bin": {

@@ -7,10 +7,14 @@ const co = require('co');
 const spawn = require('child_process').spawn;
 const argv = require('minimist')(process.argv.slice(2));
 
+const http = require('http');
+const enableDestroy = require('server-destroy');
+
 const syncLocal = require('../lib').syncLocal;
 
 const CONSUMER_KEY = argv.consumerKey || process.env.POCKET_CONSUMER_KEY;
-const REDIRECT_URI = 'https://getpocket.com';
+const REDIRECT_PORT = 3312;
+const REDIRECT_URI = `http://localhost:${REDIRECT_PORT}`;
 
 const handlePromiseError = (error) => console.error('ERROR!', error);
 
@@ -56,7 +60,8 @@ const authorize = (consumerKey) => {
     // wait a bit to let user read before opening
     setTimeout(() => spawn('open', [AUTH_URL]), 1000);
 
-    yield waitForUserInput();
+    yield waitForRedirect(REDIRECT_PORT);
+    console.log('Authorized successfully...')
     return yield getAccessToken(consumerKey, requestToken);
   }).catch(handlePromiseError);
 };
@@ -72,6 +77,27 @@ const waitForUserInput = () => {
       rl.close();
       resolve();
     });
+  });
+};
+
+const waitForRedirect = (port) => {
+  return new Promise((resolve) => {
+    const server = http.createServer( (req, res) => {
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.end(`
+        <!DOCTYPE html>
+        <html>
+          <body style="text-align: center;">
+            <h1>You have been successfully authenticated by Pocket!</h1>
+            <h2>Syncing is already in progress. Please close the page!</h2>
+          </body>
+        </html>
+      `);
+      server.destroy();
+      resolve();
+    });
+    server.listen(port);
+    enableDestroy(server);
   });
 };
 
