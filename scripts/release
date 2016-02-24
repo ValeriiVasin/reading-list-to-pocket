@@ -1,0 +1,12 @@
+#!/bin/sh
+
+version="$1"
+
+if [ -z "$version" ]; then
+  echo "Please provide the release version.\nFor example:\n  npm run release -- patch|minor|major\n  npm run release -- 1.3.5"
+else
+  echo "Releasing... $version"
+  npm version $version -m "Release v%s." && \
+  git push && git push --tags && \
+  npm publish
+fi
