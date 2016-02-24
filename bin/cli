@@ -89,7 +89,7 @@ const waitForRedirect = (port) => {
         <html>
           <body style="text-align: center;">
             <h1>You have been successfully authenticated by Pocket!</h1>
-            <h2>Syncing is already in progress. Please close the page!</h2>
+            <h2>Syncing is already in progress. Please close this page and continue with terminal!</h2>
           </body>
         </html>
       `);
