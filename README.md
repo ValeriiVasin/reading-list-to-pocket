@@ -1,6 +1,6 @@
 # reading-list-to-pocket
 
-Simple importer that helps you to import your Safari Reading List to Pocket.
+Simple command line Safari Reading List to Pocket importer.
 
 1. Install `reading-list-to-pocket` npm package globally
 ```bash
