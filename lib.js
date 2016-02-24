@@ -35,6 +35,12 @@ const sync = (params) => {
   const accessToken = params.accessToken;
 
   const items = getReadingList(plistContent);
+
+  if (items.length === 0) {
+    console.log('Your Reading List is empty. Nothing to sync...');
+    return Promise.resolve();
+  }
+
   const actions = items.map(item => ({
     action: 'add',
     time: Math.round(Date.parse(item.createdOn) / 1000),
