@@ -21,6 +21,7 @@
   "bin": {
     "reading-list-to-pocket": "./bin/cli"
   },
+  "repository": "github:valeriivasin/reading-list-to-pocket",
   "keywords": [
     "pocket",
     "import",
